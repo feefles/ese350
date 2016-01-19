@@ -1,5 +1,7 @@
 ---
 layout: default
+title: "Lab 1"
+permalink: "/lab1.html"
 ---
 
 Lab 1 - The Solex Agitator
