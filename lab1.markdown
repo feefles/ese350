@@ -22,7 +22,7 @@ Lab 1 - The Solex Agitator
     - The first stage of the circuit produces the square wave that is then operated on by the rest of the components. It uses an RC circuit to drive the change between different output levels, and thus, if we decrease the RC time constant, the charging of the capacitor would take less time and the maximum frequency of the circuit would be higher. Thus a smaller capacitor in the first stage would increase the maximum possible frequency.
 
 4. What is the function of the zener diodes? 
-    - While the zener diodes were not used in lab, their purpose is to allow flow in one direction up to a certain potential difference and then to permit any flow beyond this voltage limit. In this circuit they act as a limit to the square wave's amplitude, allowing only certain maximum voltages relative to ground at the output. In the case of the diagram on the lab handout, this would be a range of 5.1V in either direction from ground. 
+    - While the zener diodes were not used in lab, their purpose is to allow flow in one direction up to a certain potential difference and then to permit any flow beyond this voltage limit. In this circuit they act as a limit to the square wave's amplitude, allowing only certain maximum voltages relative to ground at the output. In the case of the diagram on the lab handout, this would be a range of 5.1V from ground. 
 
 Our Finished Circuit
 --------------------
