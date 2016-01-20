@@ -8,7 +8,7 @@ Lab 1 - The Solex Agitator
 ==========================
 
 1. Identify the function of all four stages and explain how each works
-    - Astable Multivibrator: A multivibrator is a type circuit with two distinct output voltage levels. Astability means that the state of the circuit at each output level is unstable and that feedback will eventually cause the circuit to transition to the other state. This feature is driven by an RC circuit whose natural charging and discharging properties cause the circuit to oscilate through two states indefinitely. 
+    - Astable Multivibrator: A multivibrator is a type of circuit with two distinct output voltage levels. Astability means that the state of the circuit at each output level is unstable and that feedback will eventually cause the circuit to transition to the other state. This feature is driven by an RC circuit whose natural charging and discharging properties cause the circuit to oscilate through two states indefinitely. 
     - Amplifier:
 	The amplifier stage is an inverting amplifier whose feedback resistor is a 100kOhm variable resistor. It serves to take the input square wave from the multivibrator and amplify it before it is mathematically operated on. The gain of the stage can be changed through a adjusting the potentiometer. 
     - Integrators: 
