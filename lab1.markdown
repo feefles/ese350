@@ -16,7 +16,7 @@ Lab 1 - The Solex Agitator
 
 
 2. How would you convert the final sine wave to a square wave? 
-    - We know that we integrated a square wave twice in order to get the final sine wave. Therefore, we could differentiate twice again to get back to a square wave. However, due to steady state error in integration, there is a good chance there will be some degredation of the signal due to loss and propgated error across all components. 
+    - We know that we integrated a square wave twice in order to get the final sine wave. Therefore, we could use two Op-Amp differentiator circuits to get back to a square wave. However, due to steady state error in integration, there is a good chance there will be some degredation of the signal due to loss and propgated error across all components. 
 
 3. How would you increase the maximum frequency of the circuit? 
     - The first stage of the circuit produces the square wave that is then operated on by the rest of the components. It uses an RC circuit to drive the change between different output levels, and thus, if we decrease the RC time constant, the charging of the capacitor would take less time and the maximum frequency of the circuit would be higher. Thus a smaller capacitor in the first stage would increase the maximum possible frequency.
