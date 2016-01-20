@@ -23,3 +23,24 @@ Lab 1 - The Solex Agitator
 
 4. What is the function of the zener diodes? 
     - While the zener diodes were not used in lab, their purpose is to allow flow in one direction up to a certain potential difference and then to permit any flow beyond this voltage limit. In this circuit they act as a limit to the square wave's amplitude, allowing only certain maximum voltages relative to ground at the output. In the case of the diagram on the lab handout, this would be a range of 5.1V in either direction from ground. 
+
+Our Finished Circuit
+--------------------
+![Circuit Board](assets/lab1_circuit.jpg "Finished Circuit")
+
+Oscilloscope Output
+-------------------
+![Oscilloscope](assets/lab1_oscope.jpg "Oscilloscope Output")
+
+
+<!-- 
+
+5. Can the design be simplified? Explain. If simplification is possible, include the costs and benefits of the design decision. 
+
+6. Using only NPN and PNP transistors along with potentiometers, how would you create a square wave generator with variable frequency and variable amplitude? 
+
+7. Using only resistors and capacitors, convert a square wave into a sine wave. 
+
+8. Using only resistors and capacitors, convert a sine wave into a square wave. 
+
+9. How would you add computer control to this circuit? What would replace the potentiometers and how would the computer sense amplitude and frequency?  -->
