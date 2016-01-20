@@ -9,11 +9,11 @@ Lab 1 - The Solex Agitator
 
 1. Identify the function of all four stages and explain how each works
     - Astable Multivibrator:
-	-Multivibrators are ciruits which provide for a two different "states" of output. Astability implies that neither of these two states are stable and that ultimately, when in one state, feedback will cause the circuit to jump to the other state. This is accompished with an RC circuit component to drive the oscilation, and two zener diodes to provide voltage limits on either state. There is a variable resistor included as one of the feedback resistors to the positive terminal of the amplifier, this serves to modulate the frequency of the oscilation between states through changing the RC constant of the oscilatory component.
+	Multivibrators are ciruits which provide for a two different "states" of output. Astability implies that neither of these two states are stable and that ultimately, when in one state, feedback will cause the circuit to jump to the other state. This is accompished with an RC circuit component to drive the oscilation, and two zener diodes to provide voltage limits on either state. There is a variable resistor included as one of the feedback resistors to the positive terminal of the amplifier, this serves to modulate the frequency of the oscilation between states through changing the RC constant of the oscilatory component.
     - Amplifier
-	-The amplifier stage is an inverting amplifier whose feedback resistor is a 100kOhm variable resistor which can be used to change the output signal's gain. The ability to modify the gain allows the operator to fully vary the amount that the input square wave is amplified.  
+	The amplifier stage is an inverting amplifier whose feedback resistor is a 100kOhm variable resistor which can be used to change the output signal's gain. The ability to modify the gain allows the operator to fully vary the amount that the input square wave is amplified.  
     - Integrators 
-	-The final two components are Op-Amp circuits integrators. As the name betrays, these circuits perform the mathematical operation of integration. That is, in the first stage, the square wave is integrated, producing a triangle wave. In the second stage, the resulting triangle wave is integrated to generate the sine wave.
+	The final two components are Op-Amp circuits integrators. As the name betrays, these circuits perform the mathematical operation of integration. That is, in the first stage, the square wave is integrated, producing a triangle wave. In the second stage, the resulting triangle wave is integrated to generate the sine wave.
 
 
 2. How would you convert the final sine wave to a square wave? 
