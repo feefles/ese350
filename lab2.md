@@ -8,6 +8,13 @@ Lab 2 - Morse Code Decoder
 ==========================
 
 
+Our Finished Circuit
+--------------------
+![Circuit Board](assets/lab2_circuit.jpg "Finished Circuit")
+
+
+
+
     #include <avr/io.h> //Defines pins, ports, etc.
     #include <util/delay.h>
     #include <stdio.h>
@@ -22,8 +29,8 @@ Lab 2 - Morse Code Decoder
     int decode_key = 0x00;
     int count = 0;
 
-
-
+The decoding code is rather boring but here it is in all its glory. 
+It breaks them down into now many presses are required for the letter.
 
     // decode characters consisting of a single button press
     char decode_key_size_1(int key){
@@ -114,12 +121,13 @@ Lab 2 - Morse Code Decoder
 
     }
 
+Here is where the interesting code actually starts
 
     // init timer with x64 prescaler, set count to zero
     void timer1_init()
     {
-        TCCR1B |= 0x03;
-        TCNT1 = 0;
+        TCCR1B |= 0x03; // use 64 prescalar
+        TCNT1 = 0; //reset tcnt
     }
 
 
@@ -275,3 +283,4 @@ Lab 2 - Morse Code Decoder
         while(1){}
         return (0); //this line is never actually reached
     }
+```
