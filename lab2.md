@@ -138,12 +138,17 @@ It breaks them down into now many presses are required for the letter.
 
 Here is where the interesting code actually starts
 
+
+Helper function that initializes the timer with 64 prescaler and resets the TCNT
     // init timer with x64 prescaler, set count to zero
     void timer1_init()
     {
         TCCR1B |= 0x03; // use 64 prescalar
         TCNT1 = 0; //reset tcnt
     }
+
+Falling edge corresponds to the key being pressed. 
+We start counting and set the trigger to rising edge. 
 
 
     // falling edge interrupt routine
@@ -162,7 +167,9 @@ Here is where the interesting code actually starts
         TIFR1 |= 0x20;
     }
 
-
+Rising edge corresponds to key being released. 
+Do similar things, but also handle the logic for the keypress
+length. Flash the LED appropriately. 
     void static inline rising_edge_interrupt()
     {
         
@@ -216,6 +223,7 @@ Here is where the interesting code actually starts
     }
 
 
+This interrupt wraps around the other 2 handlers (allowed us to better abstract the code)
     // Timer interrupt
     ISR(TIMER1_CAPT_vect){
 
@@ -232,6 +240,8 @@ Here is where the interesting code actually starts
 
     }
 
+The timer interrupt. We use this interrupt to determine
+when we have hit a space and should decode. 
     // timer overflow interrupt
     ISR(TIMER1_OVF_vect){
         
@@ -298,4 +308,4 @@ Here is where the interesting code actually starts
         while(1){}
         return (0); //this line is never actually reached
     }
-```
+
