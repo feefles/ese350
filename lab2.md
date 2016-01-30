@@ -7,6 +7,21 @@ permalink: "/lab2.html"
 Lab 2 - Morse Code Decoder
 ==========================
 
+Polling vs interrupt-driven 
+The main difference is in the busy loop. When polling, you have continuously look for a change 
+in the register you are polling for. This takes up precious resources on the microcontroller
+since it's continuously looking for this. Also, it could lead to some small delays depending on how your polling works. 
+For example, you have a large loop that's going and you poll at the end: you might start your subroutine 
+that responds to the change a few clock cycles later since you are polling at the end of the loop.
+When using an interrupt driven handler, you avoid the busy loop, and are less prone 
+to this potential delay. 
+
+For this task, interrupt driven makes a lot of sense. First, you definitely need the 
+timer interrupt because you except all of these events to be over one overflow long. 
+You could achieve the same thing with polling, but as discussed above, busy loops
+are usually not a good thing. The edge capture interrupt is also better than polling. 
+
+
 
 Our Finished Circuit
 --------------------
