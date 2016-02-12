@@ -179,6 +179,11 @@ Not putting all the different functions, but here is what one of them looks like
 
     }
 
+Part 5:
+
+Simply, the timer was set to CTC mode through the following configuration of TCCR1A/B. Bit WGM12 in TCCR1B was set high, thus enabling CTC mode for timer 1. Bits COM1B0 and COM1A0 were set low to disable interrupt compare on OCR1A/B. To set timer 0, the same configuration and set of selections was used, although specific to the control structure of that timer.
+
+	
 
 Questions
 ----------
@@ -197,6 +202,7 @@ What are the functionalities of TCNT1, OCR1A/B, TIMSK1, TCCR1A/B? What are the p
 ### Question 2
 What are the minimum and maximum frequences of Timer1 and Timer0 assuming no prescaling? 
 
+The difference between the two is that Timer1 is a 16 bit timer, whereas timer0 is an 8 bit timer. They have the same granularity, that, with no prescaling, they could conceivably measure every one pulse of the cpu. That is, 16mhz max. However, since Timer1 can count up to 2^16, and Timer0 can only count up to 2^8. Timer1's minimum frequency is ~244hz whereas timer0's is 62.5kHz.
 
 ### Question 3
 Provide an equation to convert milliseconds into clock ticks
@@ -238,7 +244,4 @@ We could also use a pull-up resistor and reverse some logic. Instead of settings
 ### Question 8. 
 Explain why you used prescalars. 
 The prescalar was more necessary for some parts than others. For generating the waveform, a prescalar of 8 seemed like a good choice. We didn't have a very specific range of frequencies to work off of. It was more important for the 4ms interrupt in part 3. That had to be set to a prescalar of 256 in order to get the output compare within the required 65536 imposed by the 16 bit timer. You'll see in the code we set OCR2A = 0xFA, which is 250. 
-
-### Question 9. 
-Discuss the advantages and disadvantages of using CTC vs interrupt based waveform generation. 
 
