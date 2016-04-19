@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{FF35A00E-CC41-8A70-3939-7BAECB04B837}") = "VIRTuoso", "Assembly-CSharp.csproj", "{F19BA78F-8CD2-7076-93F5-2F7190635E4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F19BA78F-8CD2-7076-93F5-2F7190635E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19BA78F-8CD2-7076-93F5-2F7190635E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19BA78F-8CD2-7076-93F5-2F7190635E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19BA78F-8CD2-7076-93F5-2F7190635E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
