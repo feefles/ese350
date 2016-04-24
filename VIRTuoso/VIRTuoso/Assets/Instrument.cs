@@ -8,15 +8,19 @@ public class Instrument : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		aSources = GetComponents<AudioSource>();
-		float[] set_speeds = {0.8f, 1.0f, 1.2f};
+		aSources = GetComponentsInChildren<AudioSource>();
+		float[] set_speeds = {0.4f, 0.6f, 0.8f, 1.0f, 1.2f, 1.4f, 1.6f};
 		speeds = set_speeds;
 
-		float startingSpeed = 0.8f;
-		curSpeed = 0;
+		float startingSpeed = 1.0f;
+		curSpeed = 3;
+		for (int i = 0; i < aSources.Length; i++) {
+			aSources [i].pitch = startingSpeed / speeds [i];
+			aSources [i].mute = true;
+		} 
+		aSources [curSpeed].mute = false;
 
-
-		switchSpeed (curSpeed, curSpeed + 1 );
+		//switchSpeed (curSpeed, curSpeed + 1 );
 	}
 
 	void switchSpeed(int newCursor, int prevCursor) {
