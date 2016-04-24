@@ -28,7 +28,7 @@ public class Instrument : MonoBehaviour {
 		for (int i = 0; i < aSources.Length; i++) {
 			aSources [i].pitch = newSpeed / speeds [i];
 			if (speeds [i] == newSpeed) {
-				aSources[i].mute = false;
+				aSources[i].mute = true;
 			} else {
 				aSources [i].mute = true;
 			}
@@ -42,6 +42,17 @@ public class Instrument : MonoBehaviour {
 //		}
 //		aSources [prevCursor].mute = true;
 
+	}
+
+	public void switchSpeed(float newSpeed) {
+		for (int i = 0; i < aSources.Length; i++) {
+			aSources [i].pitch = newSpeed / speeds [i];
+			if (speeds [i] == newSpeed) {
+				aSources[i].mute = false;
+			} else {
+				aSources [i].mute = true;
+			}
+		}
 	}
 
 		

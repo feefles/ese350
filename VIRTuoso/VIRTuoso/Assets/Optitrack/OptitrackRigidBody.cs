@@ -61,7 +61,7 @@ public class OptitrackRigidBody : MonoBehaviour {
 					Vector3 temp = transform.position;
 				    temp.y = ((OptitrackRigidBodyManager.instance.rigidBodyPositions[index].y)*-5.0f); 
 					
-					temp.x = ((OptitrackRigidBodyManager.instance.rigidBodyPositions[index].x)*-10.0f);
+					temp.x = ((OptitrackRigidBodyManager.instance.rigidBodyPositions[index].x)*10.0f);
 					//temp.z = ((OptitrackRigidBodyManager.instance.rigidBodyPositions[index].z)*-10.0f); 
 
 					transform.position = temp;
