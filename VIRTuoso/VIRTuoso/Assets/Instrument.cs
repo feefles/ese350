@@ -17,6 +17,7 @@ public class Instrument : MonoBehaviour {
 		for (int i = 0; i < aSources.Length; i++) {
 			aSources [i].pitch = startingSpeed / speeds [i];
 			aSources [i].mute = true;
+			aSources[i].loop = true;
 		} 
 		aSources [curSpeed].mute = false;
 
@@ -45,6 +46,16 @@ public class Instrument : MonoBehaviour {
 	}
 
 	public void switchSpeed(float newSpeed) {
+		// first find the closest speed
+		float mindiff = 100;
+		float closestSpeed = 1.0f;
+		for (int i = 0; i < speeds.Length; i++) {
+			if (Mathf.Abs(speeds[i] - newSpeed) < mindiff) {
+				mindiff = Mathf.Abs(speeds[i] - newSpeed);
+				closestSpeed = speeds[i];
+			}
+		}
+		newSpeed = closestSpeed;
 		for (int i = 0; i < aSources.Length; i++) {
 			aSources [i].pitch = newSpeed / speeds [i];
 			if (speeds [i] == newSpeed) {

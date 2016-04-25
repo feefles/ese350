@@ -19,6 +19,7 @@ public class Wand : MonoBehaviour {
 	float[] pastYPos = new float[numGestures];
 	float[] pastXPos = new float[numGestures];
 	float[] lastSwitches = new float[timeSignature];
+	float[] prevBpm = new float[timeSignature];
 
 	int tempocount = 0;
 
@@ -84,7 +85,7 @@ public class Wand : MonoBehaviour {
 				lastTransition[0] = prevGest; 
 				lastTransition[1] = newGest;
 				Debug.Log ("newGest Time: " + Time.time + " from " + prevGest + " to " + newGest);
-				lastSwitches[tempocount % timeSignature] = Time.time;
+				lastSwitches[tempocount++ % timeSignature] = Time.time;
 				if (tempocount > timeSignature) { //populated the array
 					// get the average bpm
 					float acc = 0;
@@ -92,7 +93,21 @@ public class Wand : MonoBehaviour {
 						acc = acc + (Math.Abs(lastSwitches[i] - lastSwitches[i-1]));
 					}
 					float average =  acc / (timeSignature - 1);
-					Debug.Log("bpm: "+ average);
+					prevBpm[tempocount % timeSignature] = 60.0f / average;
+					if (tempocount % timeSignature == 0) {
+						float avgBpm = 0;
+						for (int i = 0; i < prevBpm.Length; i++) {
+							avgBpm = avgBpm + prevBpm[i];
+						}
+						avgBpm = avgBpm / (prevBpm.Length-1);
+						Debug.Log("bpm: "+ avgBpm);
+
+						float newspeed = avgBpm / bpm;
+						Instrument[] instruments = GameObject.FindObjectsOfType<Instrument> ();
+						foreach (Instrument instrument in instruments) {
+							instrument.switchSpeed(newspeed);
+						}
+					}
 				}
 			}
 		}
