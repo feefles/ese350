@@ -12,11 +12,19 @@ public class Wand : MonoBehaviour {
 	
 	}
 
+	static int timeSignature = 4; // 4/4 
+	static int bpm = 110;
+
 	static int numGestures = 5;
 	float[] pastYPos = new float[numGestures];
 	float[] pastXPos = new float[numGestures];
+	float[] lastSwitches = new float[timeSignature];
 
-	Wand.Gesture[] pastGestures = new Wand.Gesture[8];
+	int tempocount = 0;
+
+	static int pgc = 40;
+	Wand.Gesture[] pastGestures = new Wand.Gesture[pgc];
+	Wand.Gesture[] lastTransition = new Wand.Gesture[2];
 	int poscount = 0;
 
 	int gesturecount = 0;
@@ -24,10 +32,12 @@ public class Wand : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Instrument[] instruments = GameObject.FindObjectsOfType<Instrument> ();
-		pastYPos [poscount++ % numGestures] = this.transform.localPosition.y;
-		pastXPos [poscount++ % numGestures] = this.transform.localPosition.x;
-		pastGestures[poscount++ % 8] = GestureRecognize ();
+		pastYPos [poscount % numGestures] = this.transform.localPosition.y;
+		pastXPos [poscount % numGestures] = this.transform.localPosition.x;
 
+
+		pastGestures[poscount % pgc] = GestureRecognize ();
+		/*
 		foreach (Instrument instrument in instruments) {
 			if (Math.Abs(this.transform.localPosition.x - instrument.transform.localPosition.x) < 0.4f) {
 				Debug.Log ("Pointing");
@@ -45,19 +55,46 @@ public class Wand : MonoBehaviour {
 				instrument.Deselect ();
 				instrumentSelected = false;
 			}
-		}
+		}*/
 		TempoRecognize ();
-	}
+		poscount++;
+}
 
 
 	void TempoRecognize() {
 		if (!this.instrumentSelected) {
-			int mostRecentGesturePointer = (poscount-1 % 8);
-			Gesture[] oldGestures = new Gesture[4];
-			for (int i = 0; i < 4; i++) {
-				oldGestures[i] = pastGestures[(mostRecentGesturePointer + i ) % 8];
+			int mostRecentGesturePointer = ((poscount-1 + pgc) % pgc);
+			Gesture[] oldGestures = new Gesture[pgc / 2];
+			Gesture [] newGestures = new Gesture[pgc / 2];
+			for (int i = 0; i < pgc /2; i++) {
+				oldGestures[i] = pastGestures[(mostRecentGesturePointer + i ) % pgc];
+				newGestures[i] = pastGestures[(mostRecentGesturePointer - i +pgc ) % pgc];
 			}
-			
+			Gesture prevGest = mostCommonGesture(oldGestures);
+			Gesture newGest = mostCommonGesture(newGestures);
+			//Debug.Log ("gestures: " + oldGestures[0] + oldGestures[1] + oldGestures[2]);
+
+
+			//Gesture newGest = pastGestures[mostRecentGesturePointer];
+			//Gesture prevGest = pastGestures[(mostRecentGesturePointer + 1)% pgc];
+			if (prevGest != newGest && prevGest != Gesture.NONE && newGest != Gesture.NONE) {
+				if (prevGest == lastTransition[0] && newGest == lastTransition[1]) {
+					return;
+				} 
+				lastTransition[0] = prevGest; 
+				lastTransition[1] = newGest;
+				Debug.Log ("newGest Time: " + Time.time + " from " + prevGest + " to " + newGest);
+				lastSwitches[tempocount % timeSignature] = Time.time;
+				if (tempocount > timeSignature) { //populated the array
+					// get the average bpm
+					float acc = 0;
+					for (int i = 1; i < timeSignature; i++) {
+						acc = acc + (Math.Abs(lastSwitches[i] - lastSwitches[i-1]));
+					}
+					float average =  acc / (timeSignature - 1);
+					Debug.Log("bpm: "+ average);
+				}
+			}
 		}
 	}
 
@@ -82,24 +119,24 @@ public class Wand : MonoBehaviour {
 		int[] count = new int[5];
 		for (int i = 1; i < pastYPos.Length; i++) {
 			// decreasing and x doesn't change very much
-			if (pastYPos [i] > pastYPos [i - 1] && pastYPos [i] - pastYPos [i - 1] > 0.01f &&
-				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < 0.2f) {
-				potentialGestures [i - 1] = Wand.Gesture.DOWN;
-				count [(int)Wand.Gesture.DOWN]++;
-			} else if (pastYPos [i] < pastYPos [i - 1] && pastYPos [i - 1] - pastYPos [i] > 0.01f &&
-				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < 0.2f) {
+			if (pastYPos [i] > pastYPos [i - 1] && pastYPos [i] - pastYPos [i - 1] > 0.1f &&
+				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < 0.4f) {
 				potentialGestures [i - 1] = Wand.Gesture.UP;
 				count [(int)Wand.Gesture.UP]++;
+			} else if (pastYPos [i] < pastYPos [i - 1] && pastYPos [i - 1] - pastYPos [i] > 0.1f &&
+				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < 0.4f) {
+				potentialGestures [i - 1] = Wand.Gesture.DOWN;
+				count [(int)Wand.Gesture.DOWN]++;
 
-			} else if (pastXPos [i] < pastXPos [i - 1] && pastXPos [i - 1] - pastXPos [i] > 0.01f &&
-				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < 0.2f) {
-				potentialGestures [i - 1] = Wand.Gesture.RIGHT;
-				count [(int)Wand.Gesture.RIGHT]++;
-
-			} else if (pastXPos [i] > pastXPos [i - 1] && pastXPos [i] - pastXPos [i - 1] > 0.01f &&
-				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < 0.2f) {
+			} else if (pastXPos [i] < pastXPos [i - 1] && pastXPos [i - 1] - pastXPos [i] > 0.1f &&
+				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < 0.4f) {
 				potentialGestures [i - 1] = Wand.Gesture.LEFT;
 				count [(int)Wand.Gesture.LEFT]++;
+
+			} else if (pastXPos [i] > pastXPos [i - 1] && pastXPos [i] - pastXPos [i - 1] > 0.1f &&
+				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < 0.4f) {
+				potentialGestures [i - 1] = Wand.Gesture.RIGHT;
+				count [(int)Wand.Gesture.RIGHT]++;
 
 			} else {
 				potentialGestures [i - 1] = Wand.Gesture.NONE;
@@ -141,7 +178,9 @@ public class Wand : MonoBehaviour {
 	Wand.Gesture mostCommonGesture(Wand.Gesture[] gestures) {
 		int[] count = new int[5];
 		foreach (Wand.Gesture g in gestures) {
-			count[(int) g]++;
+			if (g != Gesture.NONE) {
+				count[(int) g]++;
+			}
 		}
 		int maxIndex = 0;
 		int maxCount = 0;
@@ -151,6 +190,7 @@ public class Wand : MonoBehaviour {
 				maxIndex = i;
 			}
 		}
+		//Debug.Log ("most common: " + (Wand.Gesture) maxIndex);
 		return (Wand.Gesture)maxIndex;
 	}
 
