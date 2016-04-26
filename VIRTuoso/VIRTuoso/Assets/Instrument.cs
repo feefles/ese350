@@ -29,7 +29,7 @@ public class Instrument : MonoBehaviour {
 		for (int i = 0; i < aSources.Length; i++) {
 			aSources [i].pitch = newSpeed / speeds [i];
 			if (speeds [i] == newSpeed) {
-				aSources[i].mute = true;
+				aSources[i].mute = false;
 			} else {
 				aSources [i].mute = true;
 			}

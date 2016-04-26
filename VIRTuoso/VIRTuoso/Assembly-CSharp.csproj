@@ -49,6 +49,7 @@
      <Compile Include="Assets\Optitrack\OptitrackRigidBody.cs" />
      <Compile Include="Assets\Optitrack\OptitrackRigidBodyManager.cs" />
      <Compile Include="Assets\Optitrack\SlipStream.cs" />
+     <Compile Include="Assets\SerialComms.cs" />
      <Compile Include="Assets\Wand.cs" />
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>

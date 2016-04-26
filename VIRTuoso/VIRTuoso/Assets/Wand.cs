@@ -13,7 +13,7 @@ public class Wand : MonoBehaviour {
 	}
 
 	static int timeSignature = 4; // 4/4 
-	static int bpm = 110;
+	public static int bpm = 96;
 
 	static int numGestures = 5;
 	float[] pastYPos = new float[numGestures];
