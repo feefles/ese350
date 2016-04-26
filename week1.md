@@ -62,6 +62,7 @@ and we may be abot to achieve some of these effects that we want.
 Next Steps... 
 ---------------
 We have divided the work between Fifi and Lucas so they can work in parallel. 
+
 1. Lucas will be working on gesture recognition and processing the Motive data. 
 The first feature will probably be determining the "direction" the baton is pointing, and
 raising and lowering volume. We can do this without having motive streaming working 
