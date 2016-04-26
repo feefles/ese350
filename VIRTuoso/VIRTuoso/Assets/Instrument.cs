@@ -101,11 +101,14 @@ public class Instrument : MonoBehaviour {
 		foreach (AudioSource s in aSources) {
 			s.volume = s.volume + magnitude * .1f;
 		}
+		this.transform.localScale = this.transform.localScale * (aSources [0].volume) + new Vector3(.5f, .5f, .5f);
 	}
+
 	public void VolumeDown(float magnitude) {
 		foreach (AudioSource s in aSources) {
 			s.volume = s.volume - magnitude * .1f;
 		}
+		this.transform.localScale = this.transform.localScale * (aSources [0].volume) + new Vector3(.5f, .5f, .5f);
 	}
 
 	// defines this as the selected instrument
