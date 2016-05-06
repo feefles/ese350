@@ -9,26 +9,42 @@ public class SerialComms : MonoBehaviour {
 
 	public class toRun {
 
+		public static int bpm = 60;
+		public static int sec = 0;
+		public static int cnt = 0;
+
+		public int[] inst = { 1, 1, 2, 3, 4 };
+		public int[] vol = { 1, 0, 1, 0, 1 };
+
+
 		public void call_at_freq(){
 			while (true) {
-				int bpm = Wand.bpm;
 				Thread.Sleep (60000/bpm);
-				mbed.Write ("Y");
 
+
+
+				string s = "";
+				s += inst [cnt];
+				s += vol [cnt];
+
+
+				mbed.Write (s);
+
+				if (cnt == 4)
+					return;
+				cnt++;
 			}
 
 		}
 
 	}
-
-	static string send = "Y";
-
+		
 
 	static System.IO.Ports.SerialPort mbed;
 
 	// Use this for initialization
 	void Start () {
-		mbed = new SerialPort ("COM3");
+		mbed = new SerialPort ("/dev/tty.usbmodem1412");
 		mbed.ReadTimeout = 10000;
 		mbed.Open ();
 		toRun tr = new toRun ();
@@ -38,15 +54,7 @@ public class SerialComms : MonoBehaviour {
 	}
 
 
-	void call_at_freq(int freq){
-		while (true) {
-			Thread.Sleep (1000);
-			mbed.Write ("Y");
 
-		}
-
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		/*

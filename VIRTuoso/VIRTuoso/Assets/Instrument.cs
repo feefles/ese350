@@ -5,6 +5,7 @@ public class Instrument : MonoBehaviour {
 	AudioSource[] aSources;
 	float[] speeds;
 	int curSpeed;
+	public GameLogic.Instrument myInstrument;
 
 	// Use this for initialization
 	void Start () {

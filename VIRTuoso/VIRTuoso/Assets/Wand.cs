@@ -6,16 +6,26 @@ using System;
 public class Wand : MonoBehaviour {
 	enum Gesture {
 		DOWN=1, UP=2, LEFT=3, RIGHT=4, NONE=0
-	}; 
+	};
+
+	public enum Action {
+		CRESCENDO=0, DECRESCENDO=1, TEMPOCHANGE=2
+	};
 	// Use this for initialization
 	void Start () {
 	
 	}
-
 	static int timeSignature = 4; // 4/4 
-	public static int bpm = 96;
+	public static int bpm = 120;
 
-	static int numGestures = 5;
+
+	// make this public so game controller can evaluate!
+	public float[] timeOfLastAction = new float[3];
+	public float[] payloadOfLastAction = new float[3];
+	public float curBPM = bpm;
+
+
+	static int numGestures = 4;
 	float[] pastYPos = new float[numGestures];
 	float[] pastXPos = new float[numGestures];
 	float[] lastSwitches = new float[timeSignature];
@@ -30,6 +40,8 @@ public class Wand : MonoBehaviour {
 
 	int gesturecount = 0;
 	bool instrumentSelected = false;
+
+	int selectCounter = 0;
 	// Update is called once per frame
 	void Update () {
 		Instrument[] instruments = GameObject.FindObjectsOfType<Instrument> ();
@@ -44,18 +56,25 @@ public class Wand : MonoBehaviour {
 
 		Boolean selected = false;
 
+		// select instrument
 		foreach (Instrument instrument in instruments) {
-			if (Math.Abs (this.transform.localPosition.x - instrument.transform.localPosition.x) < 0.4f) {
-				if (Math.Abs (this.transform.localPosition.y - instrument.transform.localPosition.y) > 2.0f) {
+			if (Math.Abs (this.transform.localPosition.x - instrument.transform.localPosition.x) < 0.3f) {
+				if (Math.Abs (this.transform.localPosition.y - instrument.transform.localPosition.y) > 0.8f) {
 					if (curGesture == Gesture.RIGHT || curGesture == Gesture.LEFT || curGesture == Gesture.NONE) {
 						instrument.Deselect ();
 						continue;
 					}
 				}
-				Debug.Log ("Pointing");
+
 				instrument.Select ();
+
 				selected = true;
 				tempocount = 0; //stop counting tempo
+				if (selectCounter < 10) { // select for 10 frames before volume changes
+					selectCounter++;
+					return;
+				}
+
 				// do the gesture recognition here
 				if (gesturecount == pastYPos.Length) {
 					VolumeRecognize (instrument);
@@ -70,8 +89,9 @@ public class Wand : MonoBehaviour {
 			}
 		}
 		if (!selected) {
-			Debug.Log("nothing selected");
+			//Debug.Log("nothing selected");
 			TempoRecognize (); // nothing is selected right now
+			selectCounter = 0;
 		}
 		poscount++;
 }
@@ -102,7 +122,7 @@ public class Wand : MonoBehaviour {
 			}*/
 			lastTransition[0] = prevGest; 
 			lastTransition[1] = newGest;
-			Debug.Log ("newGest Time: " + Time.time + " from " + prevGest + " to " + newGest);
+			//Debug.Log ("newGest Time: " + Time.time + " from " + prevGest + " to " + newGest);
 			lastSwitches[tempocount++ % timeSignature] = Time.time;
 			if (tempocount > timeSignature) { //populated the array
 				// get the average bpm
@@ -112,14 +132,14 @@ public class Wand : MonoBehaviour {
 				}
 				float average =  acc / (timeSignature - 1);
 				prevBpm[tempocount % timeSignature] = 60.0f / average;
-				if (tempocount % timeSignature == 0) {
+				if((tempocount % timeSignature) == 0) {
 					float avgBpm = 0;
 					for (int i = 0; i < prevBpm.Length; i++) {
 						avgBpm = avgBpm + prevBpm[i];
 					}
 					avgBpm = avgBpm / (prevBpm.Length-1);
 					Debug.Log("bpm: "+ avgBpm);
-
+					curBPM = avgBpm;
 					float newspeed = avgBpm / bpm;
 					Instrument[] instruments = GameObject.FindObjectsOfType<Instrument> ();
 					foreach (Instrument instrument in instruments) {
@@ -135,10 +155,14 @@ public class Wand : MonoBehaviour {
 		Gesture curGest = GestureRecognize ();
 		if (curGest == Gesture.UP) {
 			instrument.VolumeUp (4.0f);
-			Debug.Log ("volume up");
+			Debug.Log ("volume up" + instrument.myInstrument);
+			timeOfLastAction[(int)Action.CRESCENDO] = Time.time;
+			payloadOfLastAction[(int)Action.CRESCENDO] = (int)instrument.myInstrument;
 		} else if (curGest == Gesture.DOWN) {
-				instrument.VolumeDown(4.0f);
-				Debug.Log ("volume down");
+			instrument.VolumeDown(4.0f);
+			Debug.Log ("volume down");
+			timeOfLastAction[(int)Action.DECRESCENDO] = Time.time;
+			payloadOfLastAction[(int)Action.DECRESCENDO] = (int)instrument.myInstrument;
 		}
 			
 		
@@ -148,26 +172,27 @@ public class Wand : MonoBehaviour {
 
 	Wand.Gesture GestureRecognize() {
 		Wand.Gesture[] potentialGestures = new Gesture[numGestures - 1];
+		float waywardDeviation = 0.5f;
 
 		int[] count = new int[5];
 		for (int i = 1; i < pastYPos.Length; i++) {
 			// decreasing and x doesn't change very much
-			if (pastYPos [i] > pastYPos [i - 1] && pastYPos [i] - pastYPos [i - 1] > 0.05f &&
-				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < 0.4f) {
+			if (pastYPos [i] > pastYPos [i - 1] && Math.Abs(pastYPos [i] - pastYPos [i - 1]) > 0.05f &&
+				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < waywardDeviation) {
 				potentialGestures [i - 1] = Wand.Gesture.UP;
 				count [(int)Wand.Gesture.UP]++;
-			} else if (pastYPos [i] < pastYPos [i - 1] && pastYPos [i - 1] - pastYPos [i] > 0.05f &&
-				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < 0.4f) {
+			} else if (pastYPos [i] < pastYPos [i - 1] && Math.Abs (pastYPos [i - 1] - pastYPos [i]) > 0.04f &&
+				Math.Abs (pastXPos [i] - pastXPos [i - 1]) < waywardDeviation) {
 				potentialGestures [i - 1] = Wand.Gesture.DOWN;
 				count [(int)Wand.Gesture.DOWN]++;
 
 			} else if (pastXPos [i] < pastXPos [i - 1] && pastXPos [i - 1] - pastXPos [i] > 0.05f &&
-				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < 0.4f) {
+				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < waywardDeviation) {
 				potentialGestures [i - 1] = Wand.Gesture.LEFT;
 				count [(int)Wand.Gesture.LEFT]++;
 
 			} else if (pastXPos [i] > pastXPos [i - 1] && pastXPos [i] - pastXPos [i - 1] > 0.05f &&
-				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < 0.4f) {
+				Math.Abs (pastYPos [i] - pastYPos [i - 1]) < waywardDeviation) {
 				potentialGestures [i - 1] = Wand.Gesture.RIGHT;
 				count [(int)Wand.Gesture.RIGHT]++;
 
@@ -202,7 +227,7 @@ public class Wand : MonoBehaviour {
 		if (maxCount < numGestures / 2.0) {
 			return Wand.Gesture.NONE;
 		} else {
-			Debug.Log ((Wand.Gesture) maxIndex);
+//			Debug.Log ((Wand.Gesture) maxIndex);
 
 			return (Wand.Gesture) maxIndex;
 		}
