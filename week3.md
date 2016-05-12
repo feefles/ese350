@@ -45,3 +45,5 @@ I'm happy with the progress this week - the sound synthesis stuff came together 
 so next week will be integration of this small demo and the gestures. 
 
 Fifi
+
+<a class = "post-link" href = "{{ "week4.html" | prepend: site.baseurl}}">Week 4</a>

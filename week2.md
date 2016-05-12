@@ -45,3 +45,5 @@ and smoothly transition using the volume (which I can't try out in Matlab).
 I intend to have that working by the end of the week. 
 
 Fifi
+
+<a class = "post-link" href = "{{ "week3.html" | prepend: site.baseurl}}">Week 3</a>

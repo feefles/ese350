@@ -80,3 +80,5 @@ Not too much fine tuning is needed here. Now all I need to do is tie it all back
 and make it look nice :) 
 
 Fifi
+
+<a class = "post-link" href = "{{ "week4_2.html" | prepend: site.baseurl}}">Week 4 - Demo Preparation</a>

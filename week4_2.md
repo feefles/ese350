@@ -52,3 +52,5 @@ the experience so much better. I'll be on the lookout for more simple
 fixes to make this more usable. 
 
 Fifi
+
+<a class = "post-link" href = "{{ "week5.html" | prepend: site.baseurl}}">Final Post</a>

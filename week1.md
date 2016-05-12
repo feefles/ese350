@@ -72,3 +72,5 @@ raising and lowering volume. We can do this without having motive streaming work
 how we can Unity's libraries to create the desired effects. 
 
 Our goal is to be able to do some basic sound effects in Unity by next week. 
+
+<a class = "post-link" href = "{{ "week2.html" | prepend: site.baseurl}}">Week 2 (part 1)</a>
